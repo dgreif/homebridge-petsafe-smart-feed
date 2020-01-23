@@ -1,0 +1,28 @@
+{
+  "pluginAlias": "PetSafeSmartFeed",
+  "pluginType": "platform",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "token": {
+        "title": "Auth Token",
+        "type": "string",
+        "placeholder": "Token",
+        "required": true,
+        "description": "Token obtained by running `npx -p homebridge-petsafe-smart-feed petsafe-auth-cli`"
+      }
+    },
+    "required": [
+      "token",
+      "password"
+    ]
+  },
+  "layout": [
+    {
+      "type": "fieldset",
+      "items": [
+        "token"
+      ]
+    }
+  ]
+}
