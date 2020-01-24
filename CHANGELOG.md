@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.1](https://github.com/dgreif/homebridge-petsafe-smart-feed/compare/v1.1.0...v1.1.1) (2020-01-24)
+
+
+### Bug Fixes
+
+* include auth-cli in release ([8904dab](https://github.com/dgreif/homebridge-petsafe-smart-feed/commit/8904dab16c154895ac10727bd0f1059a9d054e0a))
+
 ## 1.1.0 (2020-01-23)
 
 
