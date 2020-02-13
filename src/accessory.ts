@@ -17,7 +17,7 @@ export class SmartFeedAccessory {
     feedCharacteristic
       .on('get', (callback: any) => {
         this.feeder.requestInfoUpdate()
-        callback(null, false)
+        callback(null, this.currentlyFeeding)
       })
       .on('set', async (value: boolean, callback: any) => {
         callback()
@@ -27,7 +27,7 @@ export class SmartFeedAccessory {
             this.currentlyFeeding = true
             await feeder.repeatLastFeed()
             logInfo(`Done Feeding ${feeder.name}`)
-            await delay(10000)
+            await delay(2 * 60 * 1000)
           } catch (e) {
             logError('Failed to feed')
             logError(e)
