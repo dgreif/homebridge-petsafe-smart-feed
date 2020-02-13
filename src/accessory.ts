@@ -5,6 +5,8 @@ import { Observable } from 'rxjs'
 import { delay, logError, logInfo } from './util'
 
 export class SmartFeedAccessory {
+  currentlyFeeding = false
+
   constructor(private feeder: SmartFeed, private accessory: HAP.Accessory) {
     const { Service, Characteristic } = hap,
       feedService = this.getService(Service.Switch),
@@ -20,15 +22,21 @@ export class SmartFeedAccessory {
       .on('set', async (value: boolean, callback: any) => {
         callback()
 
-        if (value) {
-          await feeder.repeatLastFeed().catch(e => {
+        if (value && !this.currentlyFeeding) {
+          try {
+            this.currentlyFeeding = true
+            await feeder.repeatLastFeed()
+            logInfo(`Done Feeding ${feeder.name}`)
+            await delay(10000)
+          } catch (e) {
             logError('Failed to feed')
             logError(e)
-          })
-
-          logInfo(`Done Feeding ${feeder.name}`)
-          await delay(1000)
-          feedCharacteristic.updateValue(false)
+          } finally {
+            feedCharacteristic.updateValue(false)
+            this.currentlyFeeding = false
+          }
+        } else if (!value) {
+          this.currentlyFeeding = false
         }
       })
 
