@@ -19,7 +19,7 @@ export class PetSafeSmartFeedPlatform {
       },
       logError(message) {
         log.error(message)
-      }
+      },
     })
 
     if (!config) {
@@ -29,7 +29,7 @@ export class PetSafeSmartFeedPlatform {
 
     this.api.on('didFinishLaunching', () => {
       this.log.debug('didFinishLaunching')
-      this.connectToApi().catch(e => {
+      this.connectToApi().catch((e) => {
         this.log.error('Error connecting to API')
         this.log.error(e)
       })
@@ -56,7 +56,7 @@ export class PetSafeSmartFeedPlatform {
 
     this.log.info(`Configuring ${feeders.length} PetSafe Smart Feeders`)
 
-    feeders.forEach(feeder => {
+    feeders.forEach((feeder) => {
       const uuid = hap.UUIDGen.generate(debugPrefix + feeder.id),
         displayName = debugPrefix + feeder.name,
         createHomebridgeAccessory = () => {
@@ -89,10 +89,10 @@ export class PetSafeSmartFeedPlatform {
     }
 
     const staleAccessories = cachedAccessoryIds
-      .filter(cachedId => !activeAccessoryIds.includes(cachedId))
-      .map(id => this.homebridgeAccessories[id])
+      .filter((cachedId) => !activeAccessoryIds.includes(cachedId))
+      .map((id) => this.homebridgeAccessories[id])
 
-    staleAccessories.forEach(staleAccessory => {
+    staleAccessories.forEach((staleAccessory) => {
       this.log.info(
         `Removing stale cached accessory ${staleAccessory.UUID} ${staleAccessory.displayName}`
       )

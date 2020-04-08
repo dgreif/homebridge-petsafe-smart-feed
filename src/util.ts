@@ -13,7 +13,7 @@ let logger: Logger = {
     logError(message) {
       // eslint-disable-next-line no-console
       console.error(message)
-    }
+    },
   },
   debugEnabled = false
 
@@ -40,7 +40,7 @@ export function enableDebug() {
 }
 
 export function delay(milliseconds: number) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     setTimeout(resolve, milliseconds)
   })
 }
@@ -48,9 +48,9 @@ export function delay(milliseconds: number) {
 export async function requestInput(question: string) {
   const lineReader = createInterface({
       input: process.stdin,
-      output: process.stdout
+      output: process.stdout,
     }),
-    answer = await new Promise<string>(resolve => {
+    answer = await new Promise<string>((resolve) => {
       lineReader.question(question, resolve)
     })
 

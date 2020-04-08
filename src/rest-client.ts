@@ -79,13 +79,13 @@ export class RestClient {
     try {
       const headers: { [key: string]: string } = {
           'content-type': 'application/json',
-          token: this.authOptions.token
+          token: this.authOptions.token,
         },
         response = await requestWithRetry<T>({
           method: method || 'GET',
           url,
           data,
-          headers
+          headers,
         })
 
       return response

@@ -22,8 +22,8 @@ async function getTokens(email: string): Promise<Tokens> {
       url: userPath('tokens'),
       data: {
         code,
-        email
-      }
+        email,
+      },
     })
 
     return tokens
@@ -46,8 +46,8 @@ export async function logRefreshToken() {
     data: {
       consentVersion: '2019-06-25',
       email,
-      language: 'en'
-    }
+      language: 'en',
+    },
   })
 
   console.log(
