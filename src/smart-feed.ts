@@ -5,7 +5,7 @@ import {
   debounceTime,
   distinctUntilChanged,
   map,
-  throttleTime
+  throttleTime,
 } from 'rxjs/operators'
 import { logError, logInfo } from './util'
 
@@ -61,7 +61,7 @@ export class SmartFeed {
       this.onInfoRequested.pipe(throttleTime(2000)), // fire immediately
       this.onInfoRequested.pipe(debounceTime(2000)) // fire again after 2 seconds of quiet
     ).subscribe(() =>
-      this.fetchInfo().catch(e => {
+      this.fetchInfo().catch((e) => {
         logError(`Failed to fetch info for ${this.name}`)
         logError(e)
       })
@@ -70,15 +70,15 @@ export class SmartFeed {
 
   async feed({
     amount = 1,
-    slowFeed = this.initialInfo.settings.slow_feed
+    slowFeed = this.initialInfo.settings.slow_feed,
   } = {}) {
     await this.restClient.request({
       method: 'POST',
       url: this.feederPath('meals'),
       data: {
         amount,
-        slow_feed: slowFeed
-      }
+        slow_feed: slowFeed,
+      },
     })
     this.requestInfoUpdate()
   }
@@ -86,7 +86,7 @@ export class SmartFeed {
   getHistory({ days = 15 } = {}) {
     return this.restClient.request<Message[]>({
       method: 'GET',
-      url: this.feederPath(`messages?days=${days}`)
+      url: this.feederPath(`messages?days=${days}`),
     })
   }
 
@@ -111,7 +111,7 @@ export class SmartFeed {
   async fetchInfo() {
     const info = await this.restClient.request<FeederInfo>({
       method: 'GET',
-      url: this.feederPath()
+      url: this.feederPath(),
     })
 
     this.onState.next(info)

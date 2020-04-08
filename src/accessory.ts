@@ -47,12 +47,12 @@ export class SmartFeedAccessory {
     this.registerCharacteristic(
       batteryService.getCharacteristic(Characteristic.StatusLowBattery),
       feeder.onBatteryLevel.pipe(
-        map(batteryLevel => (batteryLevel < 20 ? 1 : 0))
+        map((batteryLevel) => (batteryLevel < 20 ? 1 : 0))
       )
     )
     this.registerCharacteristic(
       batteryService.getCharacteristic(Characteristic.ChargingState),
-      feeder.onState.pipe(map(state => (state.is_adapter_installed ? 1 : 0)))
+      feeder.onState.pipe(map((state) => (state.is_adapter_installed ? 1 : 0)))
     )
 
     accessoryInfoService
@@ -67,11 +67,11 @@ export class SmartFeedAccessory {
 
     this.registerCharacteristic(
       accessoryInfoService.getCharacteristic(Characteristic.FirmwareRevision),
-      feeder.onState.pipe(map(state => state.firmware_version))
+      feeder.onState.pipe(map((state) => state.firmware_version))
     )
     this.registerCharacteristic(
       accessoryInfoService.getCharacteristic(Characteristic.Name),
-      feeder.onState.pipe(map(state => state.settings.friendly_name))
+      feeder.onState.pipe(map((state) => state.settings.friendly_name))
     )
   }
 
@@ -103,7 +103,7 @@ export class SmartFeedAccessory {
       })
     }
 
-    onValue.pipe(distinctUntilChanged()).subscribe(value => {
+    onValue.pipe(distinctUntilChanged()).subscribe((value) => {
       characteristic.updateValue(value)
     })
   }

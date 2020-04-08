@@ -10,10 +10,10 @@ export class SmartFeedApi {
 
   async getFeeders() {
     const feeders = await this.restClient.request<FeederInfo[]>({
-      url: apiPath('feeders')
+      url: apiPath('feeders'),
     })
 
-    return feeders.map(info => {
+    return feeders.map((info) => {
       return new SmartFeed(info, this.restClient)
     })
   }
