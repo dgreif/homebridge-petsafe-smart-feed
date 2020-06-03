@@ -1,17 +1,26 @@
 import { ApiConfig, SmartFeedApi } from './api'
-import { HAP, hap, platformName, pluginName } from './hap'
+import { hap, platformName, pluginName } from './hap'
 import { useLogger } from './util'
 import { SmartFeedAccessory } from './accessory'
+import {
+  API,
+  DynamicPlatformPlugin,
+  Logger,
+  PlatformAccessory,
+  PlatformConfig,
+} from 'homebridge'
 
 const debug = __filename.includes('release')
 
-export class PetSafeSmartFeedPlatform {
-  private readonly homebridgeAccessories: { [uuid: string]: HAP.Accessory } = {}
+export class PetSafeSmartFeedPlatform implements DynamicPlatformPlugin {
+  private readonly homebridgeAccessories: {
+    [uuid: string]: PlatformAccessory
+  } = {}
 
   constructor(
-    public log: HAP.Log,
-    public config: ApiConfig,
-    public api: HAP.Platform
+    public log: Logger,
+    public config: PlatformConfig & ApiConfig,
+    public api: API
   ) {
     useLogger({
       logInfo(message) {
@@ -38,7 +47,7 @@ export class PetSafeSmartFeedPlatform {
     this.homebridgeAccessories = {}
   }
 
-  configureAccessory(accessory: HAP.Accessory) {
+  configureAccessory(accessory: PlatformAccessory) {
     this.log.info(
       `Configuring cached accessory ${accessory.UUID} ${accessory.displayName}`
     )
@@ -50,20 +59,20 @@ export class PetSafeSmartFeedPlatform {
     const smartFeedApi = new SmartFeedApi(this.config),
       feeders = await smartFeedApi.getFeeders(),
       cachedAccessoryIds = Object.keys(this.homebridgeAccessories),
-      platformAccessories: HAP.Accessory[] = [],
+      platformAccessories: PlatformAccessory[] = [],
       activeAccessoryIds: string[] = [],
       debugPrefix = debug ? 'TEST ' : ''
 
     this.log.info(`Configuring ${feeders.length} PetSafe Smart Feeders`)
 
     feeders.forEach((feeder) => {
-      const uuid = hap.UUIDGen.generate(debugPrefix + feeder.id),
+      const uuid = hap.uuid.generate(debugPrefix + feeder.id),
         displayName = debugPrefix + feeder.name,
         createHomebridgeAccessory = () => {
-          const accessory = new hap.PlatformAccessory(
+          const accessory = new this.api.platformAccessory(
             displayName,
             uuid,
-            hap.AccessoryCategories.LIGHTBULB
+            hap.Categories.LIGHTBULB
           )
 
           this.log.info(`Adding new Smart Feed - ${displayName}`)

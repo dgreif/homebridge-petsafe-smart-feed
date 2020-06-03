@@ -12,11 +12,11 @@
     "build": "rm -rf lib && tsc",
     "example": "ts-node ./examples/example.ts",
     "auth-cli": "npm run build && ./petsafe-auth-cli.js",
-    "test-homebridge": "npm run build && ./build/package.sh && homebridge -P ./release",
+    "test-homebridge": "npm run build && ./build/package.sh && homebridge -P ./release -U ./.homebridge",
     "prepare-npm-package": "./build/package.sh",
     "push-with-tags": "git push --follow-tags && node ./build/github-releaser.js",
     "deploy": "standard-version && npm publish release && npm run push-with-tags",
-    "deploy-alpha": "standard-version --prerelease alpha && npm publish --tag alpha release && npm run push-with-tags"
+    "deploy-beta": "standard-version --prerelease beta && npm publish --tag beta release && npm run push-with-tags"
   },
   "standard-version": {
     "scripts": {
@@ -54,7 +54,7 @@
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-prettier": "^3.1.2",
-    "homebridge": "^0.4.53",
+    "homebridge": "1.1.0",
     "homebridge-config-ui-x": "^4.14.0",
     "mocha": "^7.1.1",
     "prettier": "^2.0.4",

@@ -1,30 +1,36 @@
 import { SmartFeed } from './smart-feed'
-import { hap, HAP } from './hap'
+import { hap } from './hap'
 import { distinctUntilChanged, map, take } from 'rxjs/operators'
-import { Observable } from 'rxjs'
+import { BehaviorSubject, Observable } from 'rxjs'
 import { delay, logError, logInfo } from './util'
+import {
+  Characteristic as CharacteristicClass,
+  CharacteristicEventTypes,
+  CharacteristicGetCallback,
+  CharacteristicSetCallback,
+  CharacteristicValue,
+  PlatformAccessory,
+  WithUUID,
+  Service as ServiceClass,
+} from 'homebridge'
 
 export class SmartFeedAccessory {
-  currentlyFeeding = false
+  onCurrentlyFeeding = new BehaviorSubject(false)
 
-  constructor(private feeder: SmartFeed, private accessory: HAP.Accessory) {
+  constructor(private feeder: SmartFeed, private accessory: PlatformAccessory) {
     const { Service, Characteristic } = hap,
       feedService = this.getService(Service.Switch),
       feedCharacteristic = feedService.getCharacteristic(Characteristic.On),
       batteryService = this.getService(Service.BatteryService),
       accessoryInfoService = this.getService(Service.AccessoryInformation)
 
-    feedCharacteristic
-      .on('get', (callback: any) => {
-        this.feeder.requestInfoUpdate()
-        callback(null, this.currentlyFeeding)
-      })
-      .on('set', async (value: boolean, callback: any) => {
-        callback()
-
-        if (value && !this.currentlyFeeding) {
+    this.registerCharacteristic(
+      feedCharacteristic,
+      this.onCurrentlyFeeding,
+      async (value: CharacteristicValue) => {
+        if (value && !this.onCurrentlyFeeding.getValue()) {
           try {
-            this.currentlyFeeding = true
+            this.onCurrentlyFeeding.next(true)
             await feeder.repeatLastFeed()
             logInfo(`Done Feeding ${feeder.name}`)
             await delay(2 * 60 * 1000)
@@ -33,12 +39,13 @@ export class SmartFeedAccessory {
             logError(e)
           } finally {
             feedCharacteristic.updateValue(false)
-            this.currentlyFeeding = false
+            this.onCurrentlyFeeding.next(false)
           }
         } else if (!value) {
-          this.currentlyFeeding = false
+          this.onCurrentlyFeeding.next(false)
         }
-      })
+      }
+    )
 
     this.registerCharacteristic(
       batteryService.getCharacteristic(Characteristic.BatteryLevel),
@@ -75,32 +82,41 @@ export class SmartFeedAccessory {
     )
   }
 
-  getService(serviceType: HAP.Service) {
+  getService(serviceType: WithUUID<typeof ServiceClass>) {
     const existingService = this.accessory.getService(serviceType)
     return existingService || this.accessory.addService(serviceType)
   }
 
   registerCharacteristic(
-    characteristic: HAP.Characteristic,
+    characteristic: CharacteristicClass,
     onValue: Observable<any>,
     setValue?: (value: any) => any
   ) {
     const getValue = () => onValue.pipe(take(1)).toPromise()
 
-    characteristic.on('get', async (callback: any) => {
-      this.feeder.requestInfoUpdate()
-      callback(null, await getValue())
-    })
+    characteristic.on(
+      CharacteristicEventTypes.GET,
+      async (callback: CharacteristicGetCallback) => {
+        this.feeder.requestInfoUpdate()
+        callback(null, await getValue())
+      }
+    )
 
     if (setValue) {
-      characteristic.on('set', async (value: boolean, callback: any) => {
-        callback()
+      characteristic.on(
+        CharacteristicEventTypes.SET,
+        async (
+          value: CharacteristicValue,
+          callback: CharacteristicSetCallback
+        ) => {
+          callback()
 
-        const currentValue = await getValue()
-        if (value !== currentValue) {
-          setValue(value)
+          const currentValue = await getValue()
+          if (value !== currentValue) {
+            setValue(value)
+          }
         }
-      })
+      )
     }
 
     onValue.pipe(distinctUntilChanged()).subscribe((value) => {

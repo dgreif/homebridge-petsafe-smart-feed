@@ -3,5 +3,6 @@ node_modules
 .idea
 .DS_Store
 .env
+.homebridge
 release
 yarn.lock
