@@ -75,7 +75,7 @@ export class SmartFeed {
     await this.restClient.request({
       method: 'POST',
       url: this.feederPath('meals'),
-      data: {
+      json: {
         amount,
         slow_feed: slowFeed,
       },

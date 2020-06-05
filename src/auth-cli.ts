@@ -20,7 +20,7 @@ async function getTokens(email: string): Promise<Tokens> {
     const tokens = await requestWithRetry<Tokens>({
       method: 'POST',
       url: userPath('tokens'),
-      data: {
+      json: {
         code,
         email,
       },
@@ -43,7 +43,7 @@ export async function logRefreshToken() {
   await requestWithRetry({
     method: 'POST',
     url: userPath(),
-    data: {
+    json: {
       consentVersion: '2019-06-25',
       email,
       language: 'en',

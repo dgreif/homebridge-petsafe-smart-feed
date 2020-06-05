@@ -38,7 +38,7 @@
   "author": "dgreif",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.19.2",
+    "got": "11.3.0",
     "rxjs": "^6.5.5"
   },
   "devDependencies": {
@@ -61,7 +61,7 @@
     "standard-version": "^8.0.0",
     "ts-essentials": "^6.0.5",
     "ts-node": "^8.10.2",
-    "typescript": "^3.9.3"
+    "typescript": "^3.9.5"
   },
   "engines": {
     "node": ">=10",

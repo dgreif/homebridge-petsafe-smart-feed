@@ -32,7 +32,7 @@ export class PetSafeSmartFeedPlatform implements DynamicPlatformPlugin {
     })
 
     if (!config) {
-      this.log.info('No configuration found for platform HatchBabyRest')
+      this.log.info('No configuration found for platform PetSafeSmartFeed')
       return
     }
 
