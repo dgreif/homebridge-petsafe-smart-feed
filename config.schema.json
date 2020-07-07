@@ -1,37 +1,40 @@
 {
   "pluginAlias": "PetSafeSmartFeed",
   "pluginType": "platform",
+  "singular": true,
   "schema": {
     "type": "object",
     "properties": {
       "token": {
         "title": "Auth Token",
         "type": "string",
-        "placeholder": "Token",
         "required": true,
         "description": "Token obtained by running `npx -p homebridge-petsafe-smart-feed petsafe-auth-cli`"
       },
-      "amount": {
-        "title": "Feeding Amount",
-        "type": "integer",
-        "placeholder": 0,
-        "minimum": 0,
-        "required": false,
-        "description": "Feeding size in 1/8 cups. Set to 0 to feed the previous feeding amount."
+      "feeders": {
+        "title": "Feeders",
+        "type": "array",
+        "minLength": 0,
+        "items": {
+          "title": "Feeder",
+          "type": "object",
+          "properties": {
+            "id": {
+              "title": "Feeder ID",
+              "type": "integer",
+              "required": true,
+              "description": "See output from plugin startup for feeder IDs."
+            },
+            "amount": {
+              "title": "Feeding Amount",
+              "type": "integer",
+              "placeholder": 0,
+              "minimum": 0,
+              "description": "Feeding size in 1/8 cups. Set to 0 to feed the previous feeding amount."
+            }
+          }
+        }
       }
-    },
-    "required": [
-      "token",
-      "password"
-    ]
-  },
-  "layout": [
-    {
-      "type": "fieldset",
-      "items": [
-        "token",
-        "amount"
-      ]
     }
-  ]
+  }
 }
