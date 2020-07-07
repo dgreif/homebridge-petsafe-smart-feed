@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/dgreif/homebridge-petsafe-smart-feed/compare/v1.1.6...v1.2.0) (2020-07-07)
+
+
+### Features
+
+* allow configuration of feeding size ([#9](https://github.com/dgreif/homebridge-petsafe-smart-feed/issues/9)) ([39ce052](https://github.com/dgreif/homebridge-petsafe-smart-feed/commit/39ce0523f76e394182d5f9786be653715473d9c6))
+
 ### [1.1.6](https://github.com/dgreif/homebridge-petsafe-smart-feed/compare/v1.1.5...v1.1.6) (2020-06-05)
 
 ### [1.1.5](https://github.com/dgreif/homebridge-petsafe-smart-feed/compare/v1.1.4...v1.1.5) (2020-06-03)
