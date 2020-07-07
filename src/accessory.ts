@@ -31,7 +31,11 @@ export class SmartFeedAccessory {
         if (value && !this.onCurrentlyFeeding.getValue()) {
           try {
             this.onCurrentlyFeeding.next(true)
-            await feeder.repeatLastFeed()
+            if(this.accessory.context.amount > 0) {
+              await feeder.feed({ amount: this.accessory.context.amount })
+            } else {
+              await feeder.repeatLastFeed()
+            }
             logInfo(`Done Feeding ${feeder.name}`)
             await delay(2 * 60 * 1000)
           } catch (e) {

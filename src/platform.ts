@@ -63,7 +63,7 @@ export class PetSafeSmartFeedPlatform implements DynamicPlatformPlugin {
       activeAccessoryIds: string[] = [],
       debugPrefix = debug ? 'TEST ' : ''
 
-    this.log.info(`Configuring ${feeders.length} PetSafe Smart Feeders`)
+    this.log.info(`Configuring ${feeders.length} PetSafe Smart Feeder(s)`)
 
     feeders.forEach((feeder) => {
       const uuid = hap.uuid.generate(debugPrefix + feeder.id),
@@ -82,6 +82,8 @@ export class PetSafeSmartFeedPlatform implements DynamicPlatformPlugin {
         },
         homebridgeAccessory =
           this.homebridgeAccessories[uuid] || createHomebridgeAccessory()
+
+      homebridgeAccessory.context = this.config
 
       new SmartFeedAccessory(feeder, homebridgeAccessory)
 

@@ -72,6 +72,7 @@ export class SmartFeed {
     amount = 1,
     slowFeed = this.initialInfo.settings.slow_feed,
   } = {}) {
+    logInfo(`Feeding ${this.name} ${amount}/8 Cups ${slowFeed ? 'Slowly' : ''}`)
     await this.restClient.request({
       method: 'POST',
       url: this.feederPath('meals'),
@@ -104,7 +105,6 @@ export class SmartFeed {
     const lastFeeding = await this.getLastFeedingMessage(),
       amount = lastFeeding?.payload?.amount || 1
 
-    logInfo(`Feeding ${this.name} ${amount}/8 Cups`)
     await this.feed({ amount })
   }
 
