@@ -41,7 +41,7 @@ export class SmartFeed {
     return this.initialInfo.id
   }
   get name() {
-    return this.initialInfo.settings.friendly_name
+    return this.state.settings.friendly_name
   }
   get state() {
     return this.onState.getValue()!
@@ -68,10 +68,7 @@ export class SmartFeed {
     )
   }
 
-  async feed({
-    amount = 1,
-    slowFeed = this.initialInfo.settings.slow_feed,
-  } = {}) {
+  async feed({ amount = 1, slowFeed = this.state.settings.slow_feed } = {}) {
     logInfo(`Feeding ${this.name} ${amount}/8 Cups ${slowFeed ? 'Slowly' : ''}`)
     await this.restClient.request({
       method: 'POST',

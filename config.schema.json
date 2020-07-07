@@ -30,11 +30,55 @@
               "type": "integer",
               "placeholder": 0,
               "minimum": 0,
+              "maximum": 32,
               "description": "Feeding size in 1/8 cups. Set to 0 to feed the previous feeding amount."
             }
           }
         }
       }
+    },
+    "required": [
+      "token",
+      "password"
+    ]
+  },
+  "layout": [
+    {
+      "type": "fieldset",
+      "items": [
+        "token"
+      ]
+    },
+    {
+      "type": "fieldset",
+      "title": "Feed Amount Configuration",
+      "expandable": true,
+      "items": [
+        {
+          "key": "feeders",
+          "type": "array",
+          "items": [
+            {
+              "type": "div",
+              "displayFlex": true,
+              "flex-direction": "row",
+              "items": [
+                {
+                  "key": "feeders[].id",
+                  "placeholder": "Feeder ID"
+                },
+                {
+                  "key": "feeders[].amount"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "help",
+          "helpvalue": "<p><b>NOTE:</b> You do not need to manually configure feeders for them to appear in HomeKit.  Adding a feeder config is only necessary if you want to specify an amount to feed.  By default, feeders will dispense the same amount as the previous meal.</p>"
+        }
+      ]
     }
-  }
+  ]
 }

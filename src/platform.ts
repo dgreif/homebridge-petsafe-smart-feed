@@ -12,6 +12,10 @@ import {
 
 const debug = __filename.includes('release')
 
+interface SmartFeedPlatformConfig {
+  feeders?: FeederConfig[]
+}
+
 export class PetSafeSmartFeedPlatform implements DynamicPlatformPlugin {
   private readonly homebridgeAccessories: {
     [uuid: string]: PlatformAccessory
@@ -19,7 +23,7 @@ export class PetSafeSmartFeedPlatform implements DynamicPlatformPlugin {
 
   constructor(
     public log: Logger,
-    public config: PlatformConfig & ApiConfig,
+    public config: PlatformConfig & ApiConfig & SmartFeedPlatformConfig,
     public api: API
   ) {
     useLogger({
@@ -61,35 +65,51 @@ export class PetSafeSmartFeedPlatform implements DynamicPlatformPlugin {
       cachedAccessoryIds = Object.keys(this.homebridgeAccessories),
       platformAccessories: PlatformAccessory[] = [],
       activeAccessoryIds: string[] = [],
-      debugPrefix = debug ? 'TEST ' : ''
+      debugPrefix = debug ? 'TEST ' : '',
+      feederConfigs = this.config.feeders || []
 
     this.log.info(`Configuring ${feeders.length} PetSafe Smart Feeder(s):`)
 
     feeders.forEach((feeder) => {
-      this.log.info(` - ${feeder.name}: ${feeder.id}`)
+      let isNewFeeder = false
       const uuid = hap.uuid.generate(debugPrefix + feeder.id),
         displayName = debugPrefix + feeder.name,
         createHomebridgeAccessory = () => {
+          isNewFeeder = true
           const accessory = new this.api.platformAccessory(
             displayName,
             uuid,
             hap.Categories.LIGHTBULB
           )
-
-          this.log.info(`Adding new Smart Feed - ${displayName}`)
           platformAccessories.push(accessory)
 
           return accessory
         },
         homebridgeAccessory =
-          this.homebridgeAccessories[uuid] || createHomebridgeAccessory()
+          this.homebridgeAccessories[uuid] || createHomebridgeAccessory(),
+        feederConfig = feederConfigs.find(
+          (config: FeederConfig) => config.id === feeder.id
+        )
 
-      const feederConfig = this.config.feeders ? this.config.feeders.filter((config: FeederConfig) => config.id === feeder.id)[0] : undefined
-
+      this.log.info(
+        ` - ${feeder.name} - ID: ${feeder.id}, Amount: ${
+          feederConfig?.amount
+            ? feederConfig.amount + '/8 Cup'
+            : 'Repeat Last Meal'
+        } ${isNewFeeder ? ' (NEW)' : ''}`
+      )
       new SmartFeedAccessory(feeder, homebridgeAccessory, feederConfig)
 
       this.homebridgeAccessories[uuid] = homebridgeAccessory
       activeAccessoryIds.push(uuid)
+    })
+
+    feederConfigs.forEach((config) => {
+      if (config.id && !feeders.some((feeder) => feeder.id === config.id)) {
+        this.log.error(
+          ` - Config found with no matching feeder ID ${config.id}.  Double check that you have the right ID from the logs above.`
+        )
+      }
     })
 
     if (platformAccessories.length) {

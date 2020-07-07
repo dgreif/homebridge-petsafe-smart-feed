@@ -15,14 +15,18 @@ import {
 } from 'homebridge'
 
 export interface FeederConfig {
-  id: number,
+  id: number
   amount: number
 }
 
 export class SmartFeedAccessory {
   onCurrentlyFeeding = new BehaviorSubject(false)
 
-  constructor(private feeder: SmartFeed, private accessory: PlatformAccessory, private feederConfig: FeederConfig = {id: 0, amount: 0}) {
+  constructor(
+    private feeder: SmartFeed,
+    private accessory: PlatformAccessory,
+    { amount = 0 } = { amount: 0 }
+  ) {
     const { Service, Characteristic } = hap,
       feedService = this.getService(Service.Switch),
       feedCharacteristic = feedService.getCharacteristic(Characteristic.On),
@@ -36,8 +40,8 @@ export class SmartFeedAccessory {
         if (value && !this.onCurrentlyFeeding.getValue()) {
           try {
             this.onCurrentlyFeeding.next(true)
-            if(this.feederConfig.amount > 0) {
-              await feeder.feed({ amount: this.feederConfig.amount })
+            if (amount && amount > 0) {
+              await feeder.feed({ amount })
             } else {
               await feeder.repeatLastFeed()
             }
