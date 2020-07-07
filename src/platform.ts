@@ -1,7 +1,7 @@
 import { ApiConfig, SmartFeedApi } from './api'
 import { hap, platformName, pluginName } from './hap'
 import { useLogger } from './util'
-import { SmartFeedAccessory } from './accessory'
+import { SmartFeedAccessory, FeederConfig } from './accessory'
 import {
   API,
   DynamicPlatformPlugin,
@@ -63,9 +63,10 @@ export class PetSafeSmartFeedPlatform implements DynamicPlatformPlugin {
       activeAccessoryIds: string[] = [],
       debugPrefix = debug ? 'TEST ' : ''
 
-    this.log.info(`Configuring ${feeders.length} PetSafe Smart Feeders`)
+    this.log.info(`Configuring ${feeders.length} PetSafe Smart Feeder(s):`)
 
     feeders.forEach((feeder) => {
+      this.log.info(` - ${feeder.name}: ${feeder.id}`)
       const uuid = hap.uuid.generate(debugPrefix + feeder.id),
         displayName = debugPrefix + feeder.name,
         createHomebridgeAccessory = () => {
@@ -83,7 +84,9 @@ export class PetSafeSmartFeedPlatform implements DynamicPlatformPlugin {
         homebridgeAccessory =
           this.homebridgeAccessories[uuid] || createHomebridgeAccessory()
 
-      new SmartFeedAccessory(feeder, homebridgeAccessory)
+      const feederConfig = this.config.feeders ? this.config.feeders.filter((config: FeederConfig) => config.id === feeder.id)[0] : undefined
+
+      new SmartFeedAccessory(feeder, homebridgeAccessory, feederConfig)
 
       this.homebridgeAccessories[uuid] = homebridgeAccessory
       activeAccessoryIds.push(uuid)

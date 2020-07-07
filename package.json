@@ -1,4 +1,5 @@
 {
+  "displayName": "Homebridge PetSafe Smart Feed",
   "name": "homebridge-petsafe-smart-feed",
   "version": "1.1.6",
   "description": "Homebridge plugin for PetSafe Smart Feed",
