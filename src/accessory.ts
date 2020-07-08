@@ -80,10 +80,10 @@ export class SmartFeedAccessory {
       .updateValue('PetSafe')
     accessoryInfoService
       .getCharacteristic(Characteristic.Model)
-      .updateValue(feeder.state.product_name)
+      .updateValue(feeder.state.product_name || 'Smart Feed')
     accessoryInfoService
       .getCharacteristic(Characteristic.SerialNumber)
-      .updateValue(feeder.state.serial || 'Unknown')
+      .updateValue(feeder.state.serial || feeder.id)
 
     this.registerCharacteristic(
       accessoryInfoService.getCharacteristic(Characteristic.FirmwareRevision),
