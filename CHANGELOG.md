@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.1](https://github.com/dgreif/homebridge-petsafe-smart-feed/compare/v1.2.0...v1.2.1) (2020-07-08)
+
+
+### Bug Fixes
+
+* add fallback for model and serial number ([a3da9b0](https://github.com/dgreif/homebridge-petsafe-smart-feed/commit/a3da9b0ca88576ae81f90d1520e858bae9da6629)), closes [#10](https://github.com/dgreif/homebridge-petsafe-smart-feed/issues/10)
+
 ## [1.2.0](https://github.com/dgreif/homebridge-petsafe-smart-feed/compare/v1.1.6...v1.2.0) (2020-07-07)
 
 
