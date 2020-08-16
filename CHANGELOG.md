@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.2](https://github.com/dgreif/homebridge-petsafe-smart-feed/compare/v1.2.1...v1.2.2) (2020-08-16)
+
+
+### Bug Fixes
+
+* adjust minimum battery voltage, based on official app ([#14](https://github.com/dgreif/homebridge-petsafe-smart-feed/issues/14)) ([d5bb2c7](https://github.com/dgreif/homebridge-petsafe-smart-feed/commit/d5bb2c721df388da2617b94941ab97063641bf74))
+
 ### [1.2.1](https://github.com/dgreif/homebridge-petsafe-smart-feed/compare/v1.2.0...v1.2.1) (2020-07-08)
 
 
