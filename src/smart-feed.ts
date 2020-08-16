@@ -9,7 +9,9 @@ import {
 } from 'rxjs/operators'
 import { logError, logInfo } from './util'
 
-const minVoltage = 26000,
+// t = voltage / 32767 * 3.6 * 2
+// t >= 5.9: 3/3, t >= 5.5: 2/3, t >= 5: 1/3, t >= 0: 0/3
+const minVoltage = 22755,
   maxVoltage = 29100
 
 function getBatteryLevel(info: FeederInfo) {
