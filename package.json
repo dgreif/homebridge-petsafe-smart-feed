@@ -8,8 +8,8 @@
     "petsafe-auth-cli": "petsafe-auth-cli.js"
   },
   "scripts": {
-    "test": "eslint **/*.ts",
-    "lint": "eslint **/*.ts --fix",
+    "test": "eslint '**/*.ts'",
+    "lint": "eslint '**/*.ts' --fix",
     "build": "rm -rf lib && tsc",
     "example": "ts-node ./examples/example.ts",
     "auth-cli": "npm run build && ./petsafe-auth-cli.js",
