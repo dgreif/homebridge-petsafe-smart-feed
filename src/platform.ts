@@ -10,7 +10,8 @@ import {
   PlatformConfig,
 } from 'homebridge'
 
-const debug = __filename.includes('release')
+const { argv } = process,
+  isTestHomebridge = argv.join(' ').includes('-P . -U ./.homebridge')
 
 interface SmartFeedPlatformConfig {
   feeders?: FeederConfig[]
@@ -65,7 +66,7 @@ export class PetSafeSmartFeedPlatform implements DynamicPlatformPlugin {
       cachedAccessoryIds = Object.keys(this.homebridgeAccessories),
       platformAccessories: PlatformAccessory[] = [],
       activeAccessoryIds: string[] = [],
-      debugPrefix = debug ? 'TEST ' : '',
+      debugPrefix = isTestHomebridge ? 'TEST ' : '',
       feederConfigs = this.config.feeders || []
 
     this.log.info(`Configuring ${feeders.length} PetSafe Smart Feeder(s):`)

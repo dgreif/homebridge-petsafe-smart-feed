@@ -13,16 +13,14 @@
     "build": "rm -rf lib && tsc",
     "example": "ts-node ./examples/example.ts",
     "auth-cli": "npm run build && ./petsafe-auth-cli.js",
-    "test-homebridge": "npm run build && ./build/package.sh && homebridge -P ./release -U ./.homebridge",
-    "prepare-npm-package": "./build/package.sh",
+    "test-homebridge": "npm run build && homebridge -P . -U ./.homebridge",
     "push-with-tags": "git push --follow-tags && node ./build/github-releaser.js",
-    "deploy": "standard-version && npm publish release && npm run push-with-tags",
-    "deploy-beta": "standard-version --prerelease beta && npm publish --tag beta release && npm run push-with-tags"
+    "deploy": "standard-version && npm publish && npm run push-with-tags",
+    "deploy-beta": "standard-version --prerelease beta && npm publish --tag beta && npm run push-with-tags"
   },
   "standard-version": {
     "scripts": {
-      "prerelease": "npm run build && npm test",
-      "posttag": "npm run prepare-npm-package"
+      "prerelease": "npm run build && npm test"
     }
   },
   "repository": {
@@ -76,5 +74,11 @@
       "type": "github",
       "url": "https://github.com/sponsors/dgreif"
     }
+  ],
+  "files": [
+    "lib",
+    "petsafe-auth-cli.js",
+    "CHANGELOG.md",
+    "config.schema.json"
   ]
 }
