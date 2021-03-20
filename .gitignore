@@ -5,3 +5,4 @@ node_modules
 .env
 .homebridge
 yarn.lock
+homebridge-ui/build
