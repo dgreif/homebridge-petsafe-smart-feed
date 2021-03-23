@@ -28,6 +28,7 @@ export default function CustomConfigUi() {
   async function onToken(token: string) {
     const [config, ...otherConfigs] = await getConfigs()
     await homebridge.updatePluginConfig([{ ...config, token }, ...otherConfigs])
+    setShowTokenForm(false)
   }
 
   return showTokenForm ? (

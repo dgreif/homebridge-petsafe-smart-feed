@@ -21,10 +21,11 @@ export default function TokenForm({
   }, [loading])
 
   async function sendCode(email: string) {
-    setEmail(email)
+    setLoading(true)
 
     try {
       await homebridge.request('/send-code', { email })
+      setEmail(email)
     } catch (e) {
       homebridge.toast.error(e.message, 'Failed to Send Code')
     } finally {
@@ -32,22 +33,7 @@ export default function TokenForm({
     }
   }
 
-  async function handleSubmit(e: SyntheticEvent) {
-    e.preventDefault()
-    setLoading(true)
-
-    const target = e.target as typeof e.target & {
-      petSafeEmail: { value: string }
-      petSafeCode?: { value: string }
-    }
-
-    const email = target.petSafeEmail.value
-    const code = target.petSafeCode?.value
-
-    if (!haveSentEmail) {
-      return sendCode(email)
-    }
-
+  async function getToken(email: string, code: string) {
     try {
       const { token } = await homebridge.request('/token', {
         email: sentCodeToEmail,
@@ -63,64 +49,125 @@ export default function TokenForm({
     }
   }
 
+  useEffect(() => {
+    if (sentCodeToEmail) {
+      const form = homebridge.createForm(
+        {
+          schema: {
+            type: 'object',
+            properties: {
+              code: {
+                title: 'Code',
+                type: 'string',
+                required: true,
+                description: `Please enter the code sent to ${sentCodeToEmail}`,
+              },
+            },
+          },
+        },
+        {},
+        'Link Account',
+        'Change Email'
+      )
+
+      form.onSubmit((form) => {
+        getToken(sentCodeToEmail, form.code)
+      })
+
+      form.onCancel(() => {
+        setEmail('')
+      })
+      form.onChange(() => {})
+    } else {
+      const form = homebridge.createForm(
+        {
+          schema: {
+            type: 'object',
+            properties: {
+              email: {
+                title: 'Email',
+                type: 'string',
+                format: 'email',
+                required: true,
+              },
+            },
+          },
+        },
+        {},
+        'Send Auth Code'
+      )
+
+      form.onSubmit((form) => {
+        console.log('FORM', form)
+        sendCode(form.email)
+      })
+
+      // form.onCancel(() => {
+      //   setEmail('')
+      // })
+      form.onChange(() => {})
+    }
+  }, [sentCodeToEmail])
+
   return (
-    <div className="d-flex justify-content-center">
-      <div className="col-lg-6">
-        <form onSubmit={handleSubmit}>
-          <h4 className="text-center primary-text mb-3">
-            Link Pet Safe Account
-          </h4>
-          <div className="card p-3">
-            <div className="form-group">
-              <label htmlFor="petSafeEmail">Email</label>
-              <input
-                type="email"
-                id="petSafeEmail"
-                autoCorrect="off"
-                autoCapitalize="off"
-                spellCheck="false"
-                className="form-control"
-                required={true}
-                autoFocus={true}
-                disabled={loading || haveSentEmail}
-              />
-            </div>
-            {haveSentEmail ? (
-              <div className="form-group">
-                <label htmlFor="petSafeCode" className="active">
-                  Code
-                </label>
-                <input
-                  type="text"
-                  id="petSafeCode"
-                  autoComplete="off"
-                  autoCorrect="off"
-                  autoCapitalize="off"
-                  spellCheck="false"
-                  className="form-control"
-                  required={true}
-                  autoFocus={true}
-                  disabled={loading}
-                />
-                <small className="form-text text-muted">
-                  Please enter the code sent to {sentCodeToEmail}
-                </small>
-              </div>
-            ) : (
-              ''
-            )}
-            <div className="text-center">
-              <button
-                type="submit"
-                className="btn btn-primary"
-                disabled={loading}
-              >
-                {haveSentEmail ? 'Link Account' : 'Send Auth Code'}
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
+    <h4 className="text-center primary-text mb-3">Link Pet Safe Account</h4>
+    // <div className="d-flex justify-content-center">
+    //   <div className="col-lg-6">
+    //     <form onSubmit={handleSubmit}>
+    //       <h4 className="text-center primary-text mb-3">
+    //         Link Pet Safe Account
+    //       </h4>
+    //       <div className="card p-3">
+    //         <div className="form-group">
+    //           <label htmlFor="petSafeEmail">Email</label>
+    //           <input
+    //             type="email"
+    //             id="petSafeEmail"
+    //             autoCorrect="off"
+    //             autoCapitalize="off"
+    //             spellCheck="false"
+    //             className="form-control"
+    //             required={true}
+    //             autoFocus={true}
+    //             disabled={loading || haveSentEmail}
+    //           />
+    //         </div>
+    //         {haveSentEmail ? (
+    //           <div className="form-group">
+    //             <label htmlFor="petSafeCode" className="active">
+    //               Code
+    //             </label>
+    //             <input
+    //               type="text"
+    //               id="petSafeCode"
+    //               autoComplete="off"
+    //               autoCorrect="off"
+    //               autoCapitalize="off"
+    //               spellCheck="false"
+    //               className="form-control"
+    //               required={true}
+    //               autoFocus={true}
+    //               disabled={loading}
+    //             />
+    //             <small className="form-text text-muted">
+    //               Please enter the code sent to {sentCodeToEmail}
+    //             </small>
+    //           </div>
+    //         ) : (
+    //           ''
+    //         )}
+    //         <div className="text-center">
+    //           <button
+    //             type="submit"
+    //             className="btn btn-primary"
+    //             disabled={loading}
+    //           >
+    //             {haveSentEmail ? 'Link Account' : 'Send Auth Code'}
+    //           </button>
+    //         </div>
+    //       </div>
+    //     </form>
+    //   </div>
+    // </div>
   )
 }

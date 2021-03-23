@@ -1,9 +1,8 @@
 import { getToken, requestCode } from '../auth'
-
-const {
+import {
   HomebridgePluginUiServer,
   RequestError,
-} = require('@homebridge/plugin-ui-utils')
+} from '@homebridge/plugin-ui-utils'
 
 interface CodeRequest {
   email: string
@@ -34,7 +33,7 @@ class PluginUiServer extends HomebridgePluginUiServer {
     } catch (e) {
       console.error('Failed to send code to ' + email)
       console.error(e)
-      throw new RequestError(e.message)
+      throw new RequestError(e.message, e)
     }
   }
 
@@ -48,7 +47,7 @@ class PluginUiServer extends HomebridgePluginUiServer {
     } catch (e) {
       console.error('Failed to generate token')
       console.error(e)
-      throw new RequestError(e.message)
+      throw new RequestError(e.message, e)
     }
   }
 }
