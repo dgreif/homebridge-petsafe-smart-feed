@@ -83,7 +83,7 @@ export class SmartFeedAccessory {
       .updateValue(feeder.state.product_name || 'Smart Feed')
     accessoryInfoService
       .getCharacteristic(Characteristic.SerialNumber)
-      .updateValue(feeder.state.serial || feeder.id)
+      .updateValue(feeder.id.toString())
 
     this.registerCharacteristic(
       accessoryInfoService.getCharacteristic(Characteristic.FirmwareRevision),
