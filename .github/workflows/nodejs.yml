@@ -20,6 +20,7 @@ jobs:
     - name: npm ci, build, and test
       run: |
         npm ci
+        cd homebridge-ui && npm ci && cd ..
         npm build
         npm test
       env:
