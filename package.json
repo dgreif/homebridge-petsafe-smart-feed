@@ -8,19 +8,21 @@
     "petsafe-auth-cli": "petsafe-auth-cli.js"
   },
   "scripts": {
-    "test": "eslint '**/*.ts'",
-    "lint": "eslint '**/*.ts' --fix",
+    "start": "concurrently -c yellow,blue --kill-others \"npm:hb\" \"npm:watch:ui\"",
+    "watch:ui": "cd homebridge-ui && npm start",
+    "test": "eslint '**/*.{js,ts,tsx}'",
+    "lint": "eslint '**/*.{js,ts,tsx}' --fix",
     "build": "rm -rf lib && tsc",
     "example": "ts-node ./examples/example.ts",
     "auth-cli": "npm run build && ./petsafe-auth-cli.js",
-    "test-homebridge": "npm run build && homebridge -P . -U ./.homebridge",
+    "hb": "npm run build && homebridge -P . -U ./.homebridge",
     "push-with-tags": "git push --follow-tags && node ./build/github-releaser.js",
     "deploy": "standard-version && npm publish && npm run push-with-tags",
     "deploy-beta": "standard-version --prerelease beta && npm publish --tag beta && npm run push-with-tags"
   },
   "standard-version": {
     "scripts": {
-      "prerelease": "npm run build && npm test"
+      "prerelease": "npm run build && npm test && cd ./homebridge-ui && npm run build"
     }
   },
   "repository": {
@@ -37,6 +39,7 @@
   "author": "dgreif",
   "license": "MIT",
   "dependencies": {
+    "@homebridge/plugin-ui-utils": "0.0.19",
     "got": "11.8.2",
     "rxjs": "6.6.7"
   },
@@ -45,6 +48,7 @@
     "@types/node": "14.14.37",
     "@typescript-eslint/eslint-plugin": "4.21.0",
     "@typescript-eslint/parser": "4.21.0",
+    "concurrently": "6.0.1",
     "conventional-github-releaser": "3.1.5",
     "dotenv": "8.2.0",
     "eslint": "7.24.0",

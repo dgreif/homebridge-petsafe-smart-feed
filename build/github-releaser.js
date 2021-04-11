@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 require('dotenv/config')
 const conventionalGithubReleaser = require('conventional-github-releaser')
 
@@ -5,10 +6,10 @@ conventionalGithubReleaser(
   {
     type: 'oauth',
     url: 'https://api.github.com/',
-    token: process.env.GITHUB_TOKEN
+    token: process.env.GITHUB_TOKEN,
   },
   {
-    preset: 'angular'
+    preset: 'angular',
   },
   (e, release) => {
     if (e) {

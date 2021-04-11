@@ -1,15 +1,8 @@
 /* eslint-disable no-console */
-import { requestWithRetry, userPath } from './rest-client'
 import { requestInput } from './util'
+import { getToken, requestCode } from './auth'
 
-interface Tokens {
-  accessToken: string
-  deprecatedToken: string
-  identityId: string
-  refreshToken: string
-}
-
-async function getTokens(email: string): Promise<Tokens> {
+async function getTokens(email: string): Promise<string> {
   let code = await requestInput('Code: ')
 
   if (code.length === 6) {
@@ -17,16 +10,7 @@ async function getTokens(email: string): Promise<Tokens> {
   }
 
   try {
-    const tokens = await requestWithRetry<Tokens>({
-      method: 'POST',
-      url: userPath('tokens'),
-      json: {
-        code,
-        email,
-      },
-    })
-
-    return tokens
+    return await getToken(email, code)
   } catch (e) {
     console.error('Failed: ', e.response.data.message)
     return getTokens(email)
@@ -39,27 +23,18 @@ export async function logRefreshToken() {
   )
 
   const email = await requestInput('Email: ')
-
-  await requestWithRetry({
-    method: 'POST',
-    url: userPath(),
-    json: {
-      consentVersion: '2019-06-25',
-      email,
-      language: 'en',
-    },
-  })
+  await requestCode(email)
 
   console.log(
     'You should now receive an email from PetSafe.  Please enter the code from that email below.'
   )
 
-  const tokens = await getTokens(email)
+  const token = await getTokens(email)
 
   console.log(
     '\nSuccessfully logged in to PetSafe. Please use the following line in your homebridge config:\n'
   )
-  console.log(`"token": "${tokens.deprecatedToken}"`)
+  console.log(`"token": "${token}"`)
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
