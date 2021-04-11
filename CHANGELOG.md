@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/dgreif/homebridge-petsafe-smart-feed/compare/v1.2.6...v1.3.0) (2021-04-11)
+
+
+### Features
+
+* custom ui for auth token ([c02011c](https://github.com/dgreif/homebridge-petsafe-smart-feed/commit/c02011c495985f3de6f5fba0f28f6bcbe5e6cba0))
+
+
+### Bug Fixes
+
+* update dependencies ([809d2ae](https://github.com/dgreif/homebridge-petsafe-smart-feed/commit/809d2ae6a4fc5f55704a8fb61edbc2ee698ac172))
+* use string for SerialNumber to fix HB warning ([#21](https://github.com/dgreif/homebridge-petsafe-smart-feed/issues/21)) ([2eafab9](https://github.com/dgreif/homebridge-petsafe-smart-feed/commit/2eafab9be88a282c33610cc0def669c984f19fce))
+
 ### [1.2.6](https://github.com/dgreif/homebridge-petsafe-smart-feed/compare/v1.2.5...v1.2.6) (2021-01-29)
 
 ### [1.2.5](https://github.com/dgreif/homebridge-petsafe-smart-feed/compare/v1.2.4...v1.2.5) (2020-12-27)
