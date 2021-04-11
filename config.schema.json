@@ -1,6 +1,9 @@
 {
   "pluginAlias": "PetSafeSmartFeed",
   "pluginType": "platform",
+  "customUi": true,
+  "customUiPath": "./lib/homebridge-ui",
+  "customUiDevServer": "http://localhost:3000/api/plugins/settings-ui/homebridge-petsafe-smart-feed",
   "singular": true,
   "schema": {
     "type": "object",
