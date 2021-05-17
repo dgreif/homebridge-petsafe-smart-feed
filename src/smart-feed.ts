@@ -119,6 +119,6 @@ export class SmartFeed {
   }
 
   requestInfoUpdate() {
-    this.onInfoRequested.next()
+    this.onInfoRequested.next(null)
   }
 }
