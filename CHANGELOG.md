@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.1](https://github.com/dgreif/homebridge-petsafe-smart-feed/compare/v1.3.0...v1.3.1) (2021-05-17)
+
+
+### Bug Fixes
+
+* update dependencies ([f1aff05](https://github.com/dgreif/homebridge-petsafe-smart-feed/commit/f1aff05ce483b4c3d030312e93218ccf4b7f22bb))
+* use latest rxjs ([ef6d1eb](https://github.com/dgreif/homebridge-petsafe-smart-feed/commit/ef6d1ebf22bb65788ba51c3be1387b68afbd9396))
+
 ## [1.3.0](https://github.com/dgreif/homebridge-petsafe-smart-feed/compare/v1.2.6...v1.3.0) (2021-04-11)
 
 
