@@ -4,17 +4,17 @@
   "homepage": "./",
   "devDependencies": {
     "@homebridge/plugin-ui-utils": "0.0.19",
-    "@testing-library/jest-dom": "5.12.0",
-    "@testing-library/react": "11.2.7",
-    "@testing-library/user-event": "13.1.9",
-    "@types/jest": "26.0.23",
-    "@types/node": "15.3.0",
-    "@types/react": "17.0.5",
-    "@types/react-dom": "17.0.5",
+    "@testing-library/jest-dom": "5.14.1",
+    "@testing-library/react": "12.0.0",
+    "@testing-library/user-event": "13.2.1",
+    "@types/jest": "26.0.24",
+    "@types/node": "16.4.7",
+    "@types/react": "17.0.15",
+    "@types/react-dom": "17.0.9",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
-    "typescript": "4.2.4"
+    "typescript": "4.3.5"
   },
   "scripts": {
     "start": "react-scripts start",
