@@ -12,7 +12,7 @@
         "title": "Auth Token",
         "type": "string",
         "required": true,
-        "description": "Token obtained by running `npx -p homebridge-petsafe-smart-feed petsafe-auth-cli`"
+        "description": "Click \"Generate New Auth Token\" above to change accounts or if your refresh token has expired"
       },
       "feeders": {
         "title": "Feeders",

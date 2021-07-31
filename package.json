@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "concurrently -c yellow,blue --kill-others \"npm:hb\" \"npm:watch:ui\"",
-    "watch:ui": "cd homebridge-ui && npm start",
+    "watch:ui": "npm start --prefix homebridge-ui",
     "test": "eslint '**/*.{js,ts,tsx}'",
     "lint": "eslint '**/*.{js,ts,tsx}' --fix",
     "build": "rm -rf lib && tsc",
@@ -22,7 +22,7 @@
   },
   "standard-version": {
     "scripts": {
-      "prerelease": "npm run build && npm test && cd ./homebridge-ui && npm run build"
+      "prerelease": "npm run build && npm test && npm run build --prefix homebridge-ui"
     }
   },
   "repository": {

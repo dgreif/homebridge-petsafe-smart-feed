@@ -36,9 +36,12 @@ export default function CustomConfigUi() {
     <TokenForm onToken={onToken}></TokenForm>
   ) : (
     <>
-      <h4 className="text-center primary-text mb-3">Pet Safe Smart Feed</h4>
-      <button className="btn btn-link" onClick={() => setShowTokenForm(true)}>
-        Link to new account
+      <button
+        className="btn btn-link m-0 p-0"
+        onClick={() => setShowTokenForm(true)}
+      >
+        <i className="fa fa-redo mr-2"></i>
+        Generate New Auth Token
       </button>
     </>
   )
