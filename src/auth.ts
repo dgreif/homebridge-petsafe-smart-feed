@@ -1,33 +1,70 @@
-import { requestWithRetry, userPath } from './rest-client'
+import {
+  AuthFlowType,
+  ChallengeNameType,
+  CognitoIdentityProviderClient,
+  InitiateAuthCommand,
+  InitiateAuthCommandOutput,
+  RespondToAuthChallengeCommand,
+} from '@aws-sdk/client-cognito-identity-provider'
 
-interface Tokens {
-  accessToken: string
-  deprecatedToken: string
-  identityId: string
-  refreshToken: string
+const PETSAFE_CLIENT_ID = '18hpp04puqmgf5nc6o474lcp2g'
+
+let sharedClient: CognitoIdentityProviderClient
+
+function getClient() {
+  if (!sharedClient) {
+    sharedClient = new CognitoIdentityProviderClient({ region: 'us-east-1' })
+  }
+
+  return sharedClient
 }
 
-export async function requestCode(email: string) {
-  await requestWithRetry({
-    method: 'POST',
-    url: userPath(),
-    json: {
-      consentVersion: '2019-06-25',
-      email,
-      language: 'en',
-    },
-  })
+export function initiateAuth(email: string) {
+  const client = getClient(),
+    command = new InitiateAuthCommand({
+      AuthFlow: AuthFlowType.CUSTOM_AUTH,
+      AuthParameters: {
+        USERNAME: email,
+        AuthFlow: ChallengeNameType.CUSTOM_CHALLENGE,
+      },
+      ClientId: PETSAFE_CLIENT_ID,
+    })
+
+  return client.send(command)
 }
 
-export async function getToken(email: string, code: string) {
-  const tokens = await requestWithRetry<Tokens>({
-    method: 'POST',
-    url: userPath('tokens'),
-    json: {
-      code,
-      email,
-    },
-  })
+export async function getAuthTokens(
+  initiateAuthOutput: InitiateAuthCommandOutput,
+  code: string
+) {
+  const client = getClient(),
+    command = new RespondToAuthChallengeCommand({
+      ClientId: PETSAFE_CLIENT_ID,
+      ChallengeName: initiateAuthOutput.ChallengeName,
+      Session: initiateAuthOutput.Session,
+      ChallengeResponses: {
+        ANSWER: code.replace(/\D/g, ''),
+        USERNAME: initiateAuthOutput.ChallengeParameters!.USERNAME!,
+      },
+    }),
+    output = await client.send(command)
 
-  return tokens.deprecatedToken
+  if (output.Session) {
+    initiateAuthOutput.Session = output.Session
+  }
+
+  return output
+}
+
+export function refreshTokens(refreshToken: string) {
+  const client = getClient(),
+    command = new InitiateAuthCommand({
+      AuthFlow: AuthFlowType.REFRESH_TOKEN_AUTH,
+      AuthParameters: {
+        REFRESH_TOKEN: refreshToken,
+      },
+      ClientId: PETSAFE_CLIENT_ID,
+    })
+
+  return client.send(command)
 }

@@ -1,8 +1,8 @@
 import got, { Options as RequestOptions } from 'got'
 import { delay, logError } from './util'
+import { refreshTokens } from './auth'
 
-const apiBaseUrl = 'https://api.ps-smartfeed.cloud.petsafe.net/api/v2/',
-  usersApiBasePath = 'https://users-api.ps-smartfeed.cloud.petsafe.net/users/',
+const apiBaseUrl = 'https://platform.cloud.petsafe.net/smart-feed/',
   defaultRequestOptions: RequestOptions = {
     http2: true,
     responseType: 'json',
@@ -11,10 +11,6 @@ const apiBaseUrl = 'https://api.ps-smartfeed.cloud.petsafe.net/api/v2/',
 
 export function apiPath(path: string) {
   return apiBaseUrl + path
-}
-
-export function userPath(path = '') {
-  return usersApiBasePath + path
 }
 
 export async function requestWithRetry<T>(options: RequestOptions): Promise<T> {
@@ -41,15 +37,43 @@ export interface AuthOptions {
 }
 
 export class RestClient {
+  idToken?: string
+
   constructor(private authOptions: AuthOptions) {}
+
+  async updateIdToken() {
+    try {
+      const { AuthenticationResult } = await refreshTokens(
+        this.authOptions.token
+      )
+
+      this.idToken = AuthenticationResult?.IdToken
+    } catch (e) {
+      logError(e.message)
+    }
+
+    if (!this.idToken) {
+      throw new Error(
+        'Your PetSafe token is invalid or expired.  Please generate a new token and update your config.'
+      )
+    }
+  }
 
   async request<T = void>(
     options: RequestOptions & { url: string }
   ): Promise<T> {
+    if (!this.idToken) {
+      await this.updateIdToken()
+    }
+
+    if (!this.idToken) {
+      throw new Error('Unable to update auth token')
+    }
+
     try {
       const headers: { [key: string]: string } = {
           ...options.headers,
-          token: this.authOptions.token,
+          Authorization: this.idToken,
         },
         response = await requestWithRetry<T>({
           ...options,
@@ -61,11 +85,9 @@ export class RestClient {
       const response = e.response || {},
         { url } = options
 
-      if (
-        response.status === 400 &&
-        response?.data?.errors?.app?.[0] === 'invalid-token'
-      ) {
-        logError('Your token has expired!')
+      if (response.status === 401) {
+        await this.updateIdToken()
+        return this.request(options)
       }
 
       if (response.status === 404 && url.startsWith(apiBaseUrl)) {

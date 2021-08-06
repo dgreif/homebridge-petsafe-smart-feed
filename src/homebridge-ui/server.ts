@@ -1,9 +1,10 @@
 /* eslint-disable no-console */
-import { getToken, requestCode } from '../auth'
+import { getAuthTokens, initiateAuth } from '../auth'
 import {
   HomebridgePluginUiServer,
   RequestError,
 } from '@homebridge/plugin-ui-utils'
+import { InitiateAuthCommandOutput } from '@aws-sdk/client-cognito-identity-provider'
 
 interface CodeRequest {
   email: string
@@ -13,6 +14,8 @@ interface TokenRequest {
   email: string
   code: string
 }
+
+let initiateAuthOutput: InitiateAuthCommandOutput
 
 class PluginUiServer extends HomebridgePluginUiServer {
   constructor() {
@@ -28,7 +31,7 @@ class PluginUiServer extends HomebridgePluginUiServer {
     console.log(`Sending code to ${email}`)
 
     try {
-      await requestCode(email)
+      initiateAuthOutput = await initiateAuth(email)
     } catch (e) {
       console.error('Failed to send code to ' + email)
       console.error(e)
@@ -39,8 +42,26 @@ class PluginUiServer extends HomebridgePluginUiServer {
   generateToken = async ({ email, code }: TokenRequest) => {
     console.log(`Getting token for ${email} with code ${code}`)
 
+    if (!initiateAuthOutput) {
+      console.error('Auth Initiation Not Found')
+
+      throw new RequestError(
+        'Auth Initiation Not Found',
+        new Error('Auth Initiation Not Found')
+      )
+    }
+
     try {
-      const token = await getToken(email, code)
+      const { AuthenticationResult } = await getAuthTokens(
+        initiateAuthOutput,
+        code
+      )
+
+      if (!AuthenticationResult) {
+        throw new Error('Incorrect Code')
+      }
+
+      const token = AuthenticationResult.RefreshToken
       console.log('Generated token: ' + token)
       return { token }
     } catch (e) {

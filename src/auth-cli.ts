@@ -1,41 +1,53 @@
 /* eslint-disable no-console */
 import { requestInput } from './util'
-import { getToken, requestCode } from './auth'
+import { getAuthTokens, initiateAuth } from './auth'
+import {
+  AuthenticationResultType,
+  InitiateAuthCommandOutput,
+} from '@aws-sdk/client-cognito-identity-provider'
 
-async function getTokens(email: string): Promise<string> {
-  let code = await requestInput('Code: ')
-
-  if (code.length === 6) {
-    code = code.substr(0, 3) + '-' + code.substr(3)
-  }
+async function getTokens(
+  initiateAuthOutput: InitiateAuthCommandOutput
+): Promise<AuthenticationResultType> {
+  let output: InitiateAuthCommandOutput | undefined
 
   try {
-    return await getToken(email, code)
+    output = await getAuthTokens(
+      initiateAuthOutput,
+      await requestInput('Code: ')
+    )
   } catch (e) {
-    console.error('Failed: ', e.response.data.message)
-    return getTokens(email)
+    console.error(e.message)
+    void e
   }
+
+  if (!output?.AuthenticationResult) {
+    console.error(
+      'Authentication failed. Please check your code and try again.'
+    )
+
+    return getTokens(initiateAuthOutput)
+  }
+
+  return output.AuthenticationResult
 }
 
-export async function logRefreshToken() {
+export async function generateRefreshToken() {
   console.log(
     'This CLI will provide you with a token which you can use to configure homebridge-petsafe-smart-feed. Please enter your email address to start the process.'
   )
 
-  const email = await requestInput('Email: ')
-  await requestCode(email)
+  const email = await requestInput('Email: '),
+    initiateAuthOutput = await initiateAuth(email)
 
   console.log(
     'You should now receive an email from PetSafe.  Please enter the code from that email below.'
   )
 
-  const token = await getTokens(email)
+  const tokens = await getTokens(initiateAuthOutput)
 
   console.log(
     '\nSuccessfully logged in to PetSafe. Please use the following line in your homebridge config:\n'
   )
-  console.log(`"token": "${token}"`)
+  console.log(`"token": "${tokens.RefreshToken}"`)
 }
-
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-process.on('unhandledRejection', () => {})
