@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/dgreif/homebridge-petsafe-smart-feed/compare/v1.3.2...v2.0.0) (2021-08-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* Drop support for Node < 12
+* Drop support for homebridge < 1.0.0
+* PetSafe is migrating to a new API, with a new setup for authentication.  Your previous `token` will no longer work, and you will need to generate a new `token` after updating the plugin.  In `homebridge-config-ui-x`, open the PetSafe plugin settings and click "Generate New Auth Token" to get started.  If you are not using config-ui-x, run `npx -p homebridge-petsafe-smart-feed petsafe-auth-cli` from your terminal
+
+### Features
+
+* use new petsafe api ([b118125](https://github.com/dgreif/homebridge-petsafe-smart-feed/commit/b1181251b72d6e4b62161921e7723f4b8f57ae7e))
+
+
+### Bug Fixes
+
+* small tweaks to custom ui ([c487ec3](https://github.com/dgreif/homebridge-petsafe-smart-feed/commit/c487ec320997620ac712d408b3f22f4e912d071d))
+
+
+* drop support for older node and homebridge versions ([efdf0ff](https://github.com/dgreif/homebridge-petsafe-smart-feed/commit/efdf0ff43139720ac59fb4ccbf6ef76cdbce7c9d))
+
 ### [1.3.2](https://github.com/dgreif/homebridge-petsafe-smart-feed/compare/v1.3.1...v1.3.2) (2021-07-30)
 
 
