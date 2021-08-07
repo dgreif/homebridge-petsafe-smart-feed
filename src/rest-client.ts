@@ -4,7 +4,6 @@ import { refreshTokens } from './auth'
 
 const apiBaseUrl = 'https://platform.cloud.petsafe.net/smart-feed/',
   defaultRequestOptions: RequestOptions = {
-    http2: true,
     responseType: 'json',
     method: 'GET',
   }
