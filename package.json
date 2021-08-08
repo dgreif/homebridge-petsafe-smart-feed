@@ -1,7 +1,7 @@
 {
   "displayName": "Homebridge PetSafe Smart Feed",
   "name": "homebridge-petsafe-smart-feed",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Homebridge plugin for PetSafe Smart Feed",
   "main": "lib/index.js",
   "bin": {

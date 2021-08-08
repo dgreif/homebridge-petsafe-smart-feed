@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.2](https://github.com/dgreif/homebridge-petsafe-smart-feed/compare/v2.0.1...v2.0.2) (2021-08-08)
+
+
+### Bug Fixes
+
+* fetch new auth token before current one expires ([be3397f](https://github.com/dgreif/homebridge-petsafe-smart-feed/commit/be3397f8f3db18a140d2d5955590bd88dd872949))
+
 ### [2.0.1](https://github.com/dgreif/homebridge-petsafe-smart-feed/compare/v2.0.0...v2.0.1) (2021-08-07)
 
 
