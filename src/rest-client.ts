@@ -43,10 +43,21 @@ export class RestClient {
   async updateIdToken() {
     try {
       const { AuthenticationResult } = await refreshTokens(
-        this.authOptions.token
-      )
+          this.authOptions.token
+        ),
+        idToken = AuthenticationResult?.IdToken,
+        expiresInSeconds = AuthenticationResult?.ExpiresIn
 
-      this.idToken = AuthenticationResult?.IdToken
+      this.idToken = idToken
+
+      if (expiresInSeconds && idToken) {
+        setTimeout(() => {
+          if (this.idToken === idToken) {
+            this.idToken = undefined
+            this.updateIdToken()
+          }
+        }, (expiresInSeconds - 10) * 1000)
+      }
     } catch (e) {
       logError(e.message)
     }
