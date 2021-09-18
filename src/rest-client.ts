@@ -18,7 +18,7 @@ export async function requestWithRetry<T>(options: RequestOptions): Promise<T> {
       body: T
     }
     return response.body
-  } catch (e) {
+  } catch (e: any) {
     if (!e.response) {
       logError(
         `Failed to reach PetSafe server at ${options.url}.  ${e.message}.  Trying again in 5 seconds...`
@@ -58,7 +58,7 @@ export class RestClient {
           }
         }, (expiresInSeconds - 10) * 1000)
       }
-    } catch (e) {
+    } catch (e: any) {
       logError(e.message)
     }
 
@@ -91,7 +91,7 @@ export class RestClient {
         })
 
       return response
-    } catch (e) {
+    } catch (e: any) {
       const response = e.response || {},
         { url } = options
 

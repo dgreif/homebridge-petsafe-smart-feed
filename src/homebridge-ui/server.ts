@@ -32,7 +32,7 @@ class PluginUiServer extends HomebridgePluginUiServer {
 
     try {
       initiateAuthOutput = await initiateAuth(email)
-    } catch (e) {
+    } catch (e: any) {
       console.error('Failed to send code to ' + email)
       console.error(e)
       throw new RequestError(e.message, e)
@@ -64,7 +64,7 @@ class PluginUiServer extends HomebridgePluginUiServer {
       const token = AuthenticationResult.RefreshToken
       console.log('Generated token: ' + token)
       return { token }
-    } catch (e) {
+    } catch (e: any) {
       console.error('Failed to generate token')
       console.error(e)
       throw new RequestError(e.message, e)

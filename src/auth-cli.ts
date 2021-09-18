@@ -16,7 +16,7 @@ async function getTokens(
       initiateAuthOutput,
       await requestInput('Code: ')
     )
-  } catch (e) {
+  } catch (e: any) {
     console.error(e.message)
     void e
   }

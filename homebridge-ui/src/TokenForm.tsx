@@ -50,7 +50,7 @@ export default function TokenForm({
           })
 
           onToken(token)
-        } catch (e) {
+        } catch (e: any) {
           // eslint-disable-next-line no-console
           console.error(e)
           homebridge.toast.error(e.message, 'Failed to Link Account')
@@ -85,7 +85,7 @@ export default function TokenForm({
         try {
           await homebridge.request('/send-code', { email })
           setEmail(email)
-        } catch (e) {
+        } catch (e: any) {
           // eslint-disable-next-line no-console
           console.error(e)
           homebridge.toast.error(e.message, 'Failed to Send Code')
