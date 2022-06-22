@@ -41,7 +41,7 @@
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.32.0",
     "@homebridge/plugin-ui-utils": "0.0.19",
-    "got": "11.8.2",
+    "got": "11.8.5",
     "rxjs": "7.3.0"
   },
   "devDependencies": {
