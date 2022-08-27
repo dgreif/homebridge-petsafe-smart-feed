@@ -6,6 +6,11 @@ import {
   InitiateAuthCommandOutput,
 } from '@aws-sdk/client-cognito-identity-provider'
 
+// Hack to fix types in aws-sdk - https://github.com/aws/aws-sdk-js-v3/issues/3063
+declare global {
+  interface ReadableStream {}
+}
+
 async function getTokens(
   initiateAuthOutput: InitiateAuthCommandOutput
 ): Promise<AuthenticationResultType> {
