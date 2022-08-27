@@ -84,5 +84,8 @@
     "petsafe-auth-cli.js",
     "CHANGELOG.md",
     "config.schema.json"
+  ],
+  "workspaces": [
+    "homebridge-ui"
   ]
 }
