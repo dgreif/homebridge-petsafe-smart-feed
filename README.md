@@ -2,7 +2,7 @@
 
 > **⚠️ UNMAINTAINED**: This repository is no longer actively maintained. The original author no longer owns a myLink device and is not able to support this plugin. Please open an issue if you are interested in becoming a maintainer.
 
-[![Actions Status](https://github.com/dgreif/homebridge-petsafe-smart-feed/workflows/Node%20CI/badge.svg)](https://github.com/dgreif/homebridge-petsafe-smart-feed/actions)
+[![Actions Status](https://github.com/homebridge-plugins/homebridge-petsafe-smart-feed/workflows/Node%20CI/badge.svg)](https://github.com/homebridge-plugins/homebridge-petsafe-smart-feed/actions)
 [![verified-by-homebridge](https://badgen.net/badge/homebridge/verified/purple)](https://github.com/homebridge/homebridge/wiki/Verified-Plugins)
 
 This homebridge plugin allows you to add the PetSafe Smart Feed to HomeKit.
