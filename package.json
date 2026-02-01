@@ -29,14 +29,7 @@
     "type": "git",
     "url": "git://github.com/dgreif/homebridge-petsafe-smart-feed.git"
   },
-  "keywords": [
-    "homebridge-plugin",
-    "petsafe",
-    "smart feed",
-    "feeder",
-    "pet"
-  ],
-  "author": "dgreif",
+  "keywords": ["homebridge-plugin", "petsafe", "smart feed", "feeder", "pet"],
   "license": "MIT",
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.159.0",
@@ -69,23 +62,6 @@
     "url": "https://github.com/dgreif/homebridge-petsafe-smart-feed/issues"
   },
   "homepage": "https://github.com/dgreif/homebridge-petsafe-smart-feed#readme",
-  "funding": [
-    {
-      "type": "paypal",
-      "url": "https://www.paypal.me/dustingreif"
-    },
-    {
-      "type": "github",
-      "url": "https://github.com/sponsors/dgreif"
-    }
-  ],
-  "files": [
-    "lib",
-    "petsafe-auth-cli.js",
-    "CHANGELOG.md",
-    "config.schema.json"
-  ],
-  "workspaces": [
-    "homebridge-ui"
-  ]
+  "files": ["lib", "petsafe-auth-cli.js", "CHANGELOG.md", "config.schema.json"],
+  "workspaces": ["homebridge-ui"]
 }

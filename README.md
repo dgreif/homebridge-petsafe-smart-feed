@@ -1,7 +1,8 @@
 # homebridge-petsafe-smart-feed
 
+> **⚠️ UNMAINTAINED**: This repository is no longer actively maintained. The original author no longer owns a myLink device and is not able to support this plugin. Please open an issue if you are interested in becoming a maintainer.
+
 [![Actions Status](https://github.com/dgreif/homebridge-petsafe-smart-feed/workflows/Node%20CI/badge.svg)](https://github.com/dgreif/homebridge-petsafe-smart-feed/actions)
-[![Donate](https://badgen.net/badge/Donate/PayPal/91BE09)](https://www.paypal.me/dustingreif)
 [![verified-by-homebridge](https://badgen.net/badge/homebridge/verified/purple)](https://github.com/homebridge/homebridge/wiki/Verified-Plugins)
 
 This homebridge plugin allows you to add the PetSafe Smart Feed to HomeKit.
@@ -12,11 +13,12 @@ This homebridge plugin allows you to add the PetSafe Smart Feed to HomeKit.
 
 ## Configuration
 
-The easiest way to configure this plugins is via [`homebridge-config-ui-x`](https://www.npmjs.com/package/homebridge-config-ui-x).  This includes a custom UI which will walk you through the login process to get an auth token.
+The easiest way to configure this plugins is via [`homebridge-config-ui-x`](https://www.npmjs.com/package/homebridge-config-ui-x). This includes a custom UI which will walk you through the login process to get an auth token.
 If you do no use config-ui-x, or if you are a HOOBS user, follow the steps below.
+
 ### Obtain a token
 
-To interact with the PetSafe api, you must first obtain an access token.  You can do this by running the following command
+To interact with the PetSafe api, you must first obtain an access token. You can do this by running the following command
 
 `npx -p homebridge-petsafe-smart-feed petsafe-auth-cli`
 
@@ -24,7 +26,7 @@ To interact with the PetSafe api, you must first obtain an access token.  You ca
 
 Once you have an access token, set up your homebridge config as follows
 
- ```json
+```json
 {
   "platforms": [
     {
